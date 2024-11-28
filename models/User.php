@@ -11,6 +11,7 @@
         private $user_email;
         private $user_pass;
         private $user_state;
+        private $user_phone;
 
         // 2da Parte: Sobrecarga Constructores
         public function __construct(){
@@ -47,8 +48,7 @@
             $this->user_state = $user_state;
         }
 
-        # Constructor: Objeto 09 parámetros
-        public function __construct9($rol_code,$rol_name,$user_code,$user_name,$user_lastname,$user_id,$user_email,$user_pass,$user_state){
+        public function __construct9($rol_code, $rol_name, $user_code, $user_name, $user_lastname, $user_id, $user_email, $user_pass, $user_state, $user_phone) {
             unset($this->dbh);
             $this->rol_code = $rol_code;
             $this->rol_name = $rol_name;
@@ -59,7 +59,9 @@
             $this->user_email = $user_email;
             $this->user_pass = $user_pass;
             $this->user_state = $user_state;
+            $this->user_phone = $user_phone; // Asegúrate de pasar el parámetro correctamente
         }
+        
 
         // 3ra Parte: Setter y Getters
         # Código Rol
@@ -125,10 +127,18 @@
         public function getUserState(){
             return $this->user_state;
         }
+        # Telefono Usuario
+        public function setUserPhone($user_phone){
+            $this->user_phone = $user_phone;
+        }
+        public function getUserPhone(){
+            return $this->user_phone;
+        }        
+        
         // public function remove_pdo(){
         //     unset($this->dbh);
         // }
-
+        
         // 4ta Parte: Persistencia a la Base de Datos
 
         # RF01_CU01 - Iniciar Sesión
@@ -143,7 +153,8 @@
                             user_id,
                             user_email,
                             user_pass,
-                            user_state
+                            user_state,
+                            user_phone
                         FROM ROLES AS r
                         INNER JOIN USERS AS u
                         on r.rol_code = u.rol_code
@@ -163,7 +174,8 @@
                         $userDb['user_id'],
                         $userDb['user_email'],
                         $userDb['user_pass'],
-                        $userDb['user_state']
+                        $userDb['user_state'],
+                        $userDb['user_phone']
                     );
                     return $user;
                 } else {
@@ -261,7 +273,8 @@
                             :userId,
                             :userEmail,
                             :userPass,
-                            :userState
+                            :userState,
+                            :userPhone
                         )';
                 $stmt = $this->dbh->prepare($sql);
                 $stmt->bindValue('rolCode', $this->getRolCode());
@@ -272,6 +285,7 @@
                 $stmt->bindValue('userEmail', $this->getUserEmail());
                 $stmt->bindValue('userPass', sha1($this->getUserPass()));
                 $stmt->bindValue('userState', $this->getUserState());
+                $stmt->bindValue('userPhone', $this->getUserPhone());
                 $stmt->execute();
             } catch (Exception $e) {
                 die($e->getMessage());
@@ -291,7 +305,8 @@
                             user_id,
                             user_email,
                             user_pass,
-                            user_state
+                            user_state,
+                            user_phone
                         FROM ROLES AS r
                         INNER JOIN USERS AS u
                         on r.rol_code = u.rol_code';
@@ -306,7 +321,8 @@
                         $user['user_id'],
                         $user['user_email'],
                         $user['user_pass'],
-                        $user['user_state']
+                        $user['user_state'],
+                        $user['user_phone']
                     );
                     array_push($userList, $userObj);
                 }
@@ -328,7 +344,8 @@
                             user_id,
                             user_email,
                             user_pass,
-                            user_state
+                            user_state,
+                            user_phone
                         FROM ROLES AS r
                         INNER JOIN USERS AS u
                         on r.rol_code = u.rol_code
@@ -346,7 +363,8 @@
                     $userDb['user_id'],
                     $userDb['user_email'],
                     $userDb['user_pass'],
-                    $userDb['user_state']
+                    $userDb['user_state'],
+                    $userDb['user_phone']
                 );
                 return $user;
             } catch (Exception $e) {
@@ -365,7 +383,8 @@
                             user_id = :userId,
                             user_email = :userEmail,
                             user_pass = :userPass,
-                            user_state = :userState
+                            user_state = :userState,
+                            user_phone = :userPhone
                         WHERE user_code = :userCode';
                 $stmt = $this->dbh->prepare($sql);
                 $stmt->bindValue('rolCode', $this->getRolCode());
@@ -376,6 +395,8 @@
                 $stmt->bindValue('userEmail', $this->getUserEmail());
                 $stmt->bindValue('userPass', sha1($this->getUserPass()));
                 $stmt->bindValue('userState', $this->getUserState());
+                $stmt->bindValue('userPhone', $this->getUserPhone()); // Cambiar a getUserPhone()
+
                 $stmt->execute();
             } catch (Exception $e) {
                 die($e->getMessage());
