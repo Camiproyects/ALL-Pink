@@ -28,9 +28,9 @@ if(isset($subir)){
 </tr>
 
 <tr>
-	<td>Transferencia Bancaria</td>
-	<td>0000-000-000</td>
-	<td>Rocio Murcia</td>
+	<td>Transferencia A Bancolombia</td>
+	<td>1234-123-123</td>
+	<td>Pepo Perez</td>
 	<th><a target="_blank" href="https://google.com"> Ir al pago </a></th> 
 	<!-- iria en la linea de arriba una imagen del banco para su transferencia y el link de redireccion hacia la pagina
 	o plataforma que se realizara el pago -->
@@ -46,7 +46,7 @@ if(isset($subir)){
 	</div>
 
 	<div class="form-group">
-		<label>Nombre de la persona que transfiere</label>
+		<label>Nombre de la persona que transfiere(nombre completo)</label>
 		<input type="text" class="form-control" name="nombre" value=""/>
 	</div>
 
