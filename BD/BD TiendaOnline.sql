@@ -98,11 +98,78 @@ CREATE TABLE pagos (
    	estado int(11) NOT NULL
 );
 
+-- Cambiar a la base de datos
+USE TiendaOnline;
 
+-- Llenar tabla Admin
+INSERT INTO Admin(username, password, name) 
+VALUES 
+('admin1', 'password123', 'Administrador Principal');
 
+-- Llenar tabla clientes
+INSERT INTO clientes(username, password, name) 
+VALUES 
+('juan_perez', 'password123', 'Juan Pérez'),
+('maria_lopez', 'secure456', 'María López'),
+('carlos_gomez', 'clave789', 'Carlos Gómez'),
+('ana_rojas', 'pass123', 'Ana Rojas'),
+('pedro_ramirez', 'password321', 'Pedro Ramírez'),
+('laura_martinez', 'secure654', 'Laura Martínez'),
+('david_fernandez', 'clave987', 'David Fernández'),
+('sandra_garcia', 'pass456', 'Sandra García'),
+('jorge_herrera', 'password789', 'Jorge Herrera'),
+('claudia_moreno', 'secure123', 'Claudia Moreno');
 
+-- Llenar tabla categorias
+INSERT INTO categorias(categoria) 
+VALUES 
+('Ropa'),
+('Calzado'),
+('Accesorios');
 
+-- Llenar tabla Productos
+INSERT INTO Productos(id, descripcionProducto, price, imagen, name, id_categoria, oferta) 
+VALUES 
+(1, 'Camisa de algodón para hombre', 45.000, 'img/camisa1.jpg', 'Camisa', 1, 0),
+(2, 'Zapatos deportivos para mujer', 120.000, 'img/zapatos1.jpg', 'Zapatos', 2, 1),
+(3, 'Bolso casual de cuero', 85.000, 'img/bolso1.jpg', 'Bolso', 3, 0),
+(4, 'Camiseta básica', 25.000, 'img/camiseta.jpg', 'Camiseta', 1, 0),
+(5, 'Sandalias de playa', 50.000, 'img/sandalias.jpg', 'Sandalias', 2, 1);
 
+-- Llenar tabla EnStock
+INSERT INTO EnStock(id_producto, cantidadStock, TallaS) 
+VALUES 
+(1, 50, 'M'),
+(2, 30, '38'),
+(3, 20, 'Única'),
+(4, 100, 'L'),
+(5, 40, '39');
 
+-- Llenar tabla carro
+INSERT INTO carro(id_cliente, id_producto, cant, talla) 
+VALUES 
+(1, 1, 2, 'M'),
+(2, 2, 1, '38'),
+(3, 4, 3, 'L'),
+(4, 5, 1, '39');
 
+-- Llenar tabla Compra
+INSERT INTO Compra(id_cliente, fecha, monto, estado) 
+VALUES 
+(1, NOW(), 90.000, 1),
+(2, NOW(), 120.000, 0),
+(3, NOW(), 75.000, 1);
 
+-- Llenar tabla Productos_Compra
+INSERT INTO Productos_Compra(id_compra, id_producto, cantidad, monto) 
+VALUES 
+(1, 1, 2, 90.000),
+(2, 2, 1, 120.000),
+(3, 4, 3, 75.000);
+
+-- Llenar tabla pagos
+INSERT INTO pagos(id_cliente, id_compra, comprobante, nombre, fecha, estado) 
+VALUES 
+(1, 1, 'ABC123', 'Juan Pérez', NOW(), 1),
+(2, 2, 'DEF456', 'María López', NOW(), 0),
+(3, 3, 'GHI789', 'Carlos Gómez', NOW(), 1);
