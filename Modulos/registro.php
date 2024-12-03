@@ -1,92 +1,50 @@
-	<?php
-// Inicia la sesión
-session_start();
-
-// Incluye la conexión a la base de datos
-include 'Configuracion/funciones.php'; 
-
-// Función para limpiar los datos (se asume que tienes una función clear definida en otro lugar)
-function clear($data) {
-    global $mysqli;
-    return mysqli_real_escape_string($mysqli, trim($data));
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
 }
 
-// Función para mostrar alertas
-function alert($msg, $type, $url) {
-    echo "<script>alert('$msg'); window.location.href = '$url';</script>";
-}
+// Incluye funciones necesarias
+@include("../Configuracion/funciones.php");
 
-// Si el usuario ya está logueado, redirige al inicio
-if (isset($_SESSION['id_cliente'])) {
-    header("Location: ./");
-    exit;
-}
-
-// Verifica si se ha enviado el formulario
-if (isset($_POST['enviar'])) {
-    // Obtiene los valores del formulario
+if (isset($_POST['registrar'])) {
     $username = clear($_POST['username']);
-    $password = clear($_POST['password']);
-    $cpassword = clear($_POST['cpassword']);
-    $nombre = clear($_POST['nombre']);
+    $password = password_hash(clear($_POST['password']), PASSWORD_DEFAULT); // Contraseña encriptada
+    $nombre = clear($_POST['name']);
 
-    // Verifica si el username ya está registrado en la base de datos
-    $q = $mysqli->query("SELECT * FROM clientes WHERE username = '$username'");
-    if (mysqli_num_rows($q) > 0) { // Si el username ya está en uso
-        alert("El usuario ya está en uso", 0, 'principal');
-        exit;
+    // Lógica para insertar en la base de datos
+    $mysqli = connect(); // Asegúrate de tener la conexión correctamente configurada
+    $q = $mysqli->query("INSERT INTO clientes (username, password, name) VALUES ('$username', '$password', '$nombre')");
+
+    if ($q) {
+        echo "<script>alert('Registro exitoso');</script>";
+        redir("?p=login");
+    } else {
+        echo "<script>alert('Error en el registro');</script>";
     }
-
-    // Verifica si las contraseñas coinciden
-    if ($password != $cpassword) {
-        alert("Las contraseñas no coinciden", 0, 'principal');
-        exit;
-    }
-
-    // Encripta la contraseña antes de almacenarla en la base de datos
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-    // Inserta el nuevo usuario en la base de datos
-    $result = $mysqli->query("INSERT INTO clientes (username, password, name) VALUES ('$username', '$hashed_password', '$nombre')");
-    if (!$result) {
-        die("Error en la consulta: " . $mysqli->error);
-    }
-
-    // Recupera el id del nuevo cliente
-    $q2 = $mysqli->query("SELECT * FROM clientes WHERE username = '$username'");
-    $r = mysqli_fetch_array($q2);
-    $_SESSION['id_cliente'] = $r['id']; // Almacena el id del cliente en la sesión
-
-    alert("Te has registrado satisfactoriamente", 1, 'principal');
-    exit; // Termina la ejecución
 }
 ?>
 
-    <center>
-        <!-- Formulario de registro -->
-        <form method="post" action="">
-            <div class="centrar_login">
-                <label><h2><i class="fa fa-key"></i> Registrate</h2></label>
-                
-                <div class="form-group">
-                    <input type="text" autocomplete="off" class="form-control" placeholder="Usuario" name="username" required/>
-                </div>
+<center>
+    <form method="post" action="" style="width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <h2 style="font-family: Arial, sans-serif; color: #333;"><i class="fa fa-key"></i> Regístrate</h2>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <input type="text" class="form-control" placeholder="Usuario" name="username" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
 
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Contraseña" name="password" required/>
-                </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <input type="password" class="form-control" placeholder="Contraseña" name="password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
 
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="cpassword" required/>
-                </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <input type="password" class="form-control" placeholder="Confirmar Contraseña" name="password_confirm" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
 
-                <div class="form-group">
-                    <input type="text" autocomplete="off" class="form-control" placeholder="Nombre" name="nombre" required/>
-                </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <input type="text" class="form-control" placeholder="Nombre" name="name" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
 
-                <div class="form-group">
-                    <button class="btn btn-submit" name="enviar" type="submit"><i class="fas fa-sign-in-alt"></i> Registrate</button>
-                </div>
-            </div>
-        </form>
-    </center>
+        <button class="btn btn-submit" type="submit" name="registrar" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            <i class="fas fa-user-plus"></i> Registrarte
+        </button>
+    </form>
+</center>
