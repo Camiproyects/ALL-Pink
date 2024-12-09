@@ -47,4 +47,11 @@ if (isset($_POST['registrar'])) {
             <i class="fas fa-user-plus"></i> Registrarte
         </button>
     </form>
+
+    <!-- Botón de inicio de sesión para administradores -->
+    <form method="post" action="admin/index.php" style="margin-top: 20px;">
+        <button type="submit" class="btn btn-admin" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            <i class="fas fa-sign-in-alt"></i> Iniciar sesión como Administrador
+        </button>
+    </form>
 </center>
