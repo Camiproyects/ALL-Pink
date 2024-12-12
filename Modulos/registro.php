@@ -28,7 +28,7 @@ if (isset($_POST['registrar'])) {
     <form method="post" action="" style="width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px; background-color: #f9f9f9; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <h2 style="font-family: Arial, sans-serif; color: #333;"><i class="fa fa-key"></i> Regístrate</h2>
         <div class="form-group" style="margin-bottom: 15px;">
-            <input type="text" class="form-control" placeholder="Usuario (Con Este Iniciarias Sesion)" name="username" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+            <input type="email" class="form-control" placeholder="Usuario (Con Este Iniciarias Sesion)" name="username" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
         </div>
 
         <div class="form-group" style="margin-bottom: 15px;">
